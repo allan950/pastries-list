@@ -12,7 +12,7 @@
             <ul class="list-inline" *ngIf="pastries">
                 <li class="card mb-3" *ngFor="let pastry of pastries">
                     <div class="card-header">
-                        <span class="badge text-bg-primary">{{pastry.ref}}</span>
+                        {{pastry.ref}}
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{pastry.name}}</h5>
@@ -44,11 +44,12 @@
     </div>
 
     <!-- Pagination -->
-    <nav aria-label="...">
+    <nav aria-label="..." style="text-align: center;">
+        <small><em>Results show {{nbrOfItem}} item(s) per page</em></small>
     <ul class="pagination justify-content-center">
-        <li class="page-item" #prev (click)="console(this)"><button class="page-link" id="previous" #previous (click)="switchPage(previous, next, $event)" disabled>Previous</button></li>
-        <li class="page-item" *ngFor="let i of pageList"><button class="page-link">{{i+1}}</button></li>
-        <li class="page-item"><button class="page-link"  id="next" #next (click)="switchPage(previous, next, $event)">Next</button></li>
+        <li class="page-item" [ngClass]="{'disabled': pageStart <= 0}"><button class="page-link" id="previous" #previous (click)="switchPage(previous, next, $event)" [disabled]="pageStart <= 0">Previous</button></li>
+        <li class="page-item" [ngClass]="{'active': currentPage === i }" *ngFor="let i of pageList"><button class="page-link" (click)="pagination(i)">{{i+1}}</button></li>
+        <li class="page-item" [ngClass]="{'disabled': pageEnd >= totalNbrofPastries}"><button class="page-link"  id="next" #next (click)="switchPage(previous, next, $event)" [disabled]="pageEnd >= totalNbrofPastries">Next</button></li>
     </ul>
     </nav>
 </div>

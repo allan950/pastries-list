@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Pastries } from '../pastries';
 import { PASTRIES } from '../mock-pastries';
 import { PastrieService } from '../pastrie.service';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-pastries',
@@ -18,30 +19,21 @@ export class PastriesComponent implements OnInit {
   pageEnd: number = this.nbrOfItem;
   nbrOfPages: number = Number((this.totalNbrofPastries/this.nbrOfItem).toFixed(0))
   pageList = [...Array(this.nbrOfPages).keys()];
+  currentPage: number = 0;
 
   constructor(private pastrieService: PastrieService) { }
 
   console(item: any) {
     console.log(item);
-    //[ngClass]="{'disabled': this.getElementId('previous').disabled}"
   }
 
   ngOnInit(): void {
-    //this.pastries = this.pastrieService.getPastries();
     let count = this.pastrieService.count();
-    console.log(count);
-    //console.log(this.pastrieService.paginate(0, 3))
     this.pastries = this.pastrieService.paginate(0, this.nbrOfItem);
-    console.log(this.pageList);
-    console.log(`Number of Items: ${this.totalNbrofPastries}
-    Number of Pages: ${[...Array((this.totalNbrofPastries/this.nbrOfItem).toFixed(0)).keys()]}
-    getActualPageNbr: ${(this.totalNbrofPastries/this.nbrOfItem).toFixed(0)}`)
   }
 
   onSelect(pastrie: Pastries): void {
     this.selectedPastrie = pastrie;
-    console.log('pastries: ', pastrie);
-    console.log('selectedPastrie: ', this.selectedPastrie);
   }
 
   changeParentPreference(property: string) {
@@ -70,6 +62,10 @@ export class PastriesComponent implements OnInit {
     if (this.pageStart > 0 && prev === e.target) {
       this.pastries = this.pastrieService.paginate((this.pageStart -= this.nbrOfItem), (this.pageEnd -= this.nbrOfItem));
       prev.disabled = next.disabled = false;
+      if (this.currentPage !== undefined) {
+        this.currentPage -= 1;
+      }
+
       if (this.pageStart <= 0) {
         prev.disabled = true;
       }
@@ -77,39 +73,22 @@ export class PastriesComponent implements OnInit {
     else if (this.pageEnd < this.pastrieService.getPastries().length && next === e.target) {
       this.pastries = this.pastrieService.paginate((this.pageStart += this.nbrOfItem), (this.pageEnd += this.nbrOfItem));
       next.disabled = prev.disabled = false;
+      if (this.currentPage !== undefined) {
+        this.currentPage += 1;
+      }
+
       if (this.pageEnd >= this.pastrieService.getPastries().length) {
         next.disabled = true;
       }
     }
 
-    /*if (this.pageStart >= 0 && this.pageEnd < this.pastrieService.getPastries().length) {
-      if (elmt.id === "previous") {
-        this.pastries = this.pastrieService.paginate((this.pageStart -= this.nbrOfItem), (this.pageEnd -= this.nbrOfItem));
-      } else if (elmt.id === "next") {
-        this.pastries = this.pastrieService.paginate((this.pageStart += this.nbrOfItem), (this.pageEnd += this.nbrOfItem));
-      }
-    }*/
+    console.log(`Start: ${this.pageStart}    End: ${this.pageEnd}`);
+  }
 
-    /*if (this.pageStart >= 0 && this.pageEnd <= this.pastrieService.getPastries().length) {
-      if (elmt.id === "previous") {
-        this.pastries = this.pastrieService.paginate((this.pageStart -= this.nbrOfItem), (this.pageEnd -= this.nbrOfItem));
-      } else if (elmt.id === "next") {
-        this.pastries = this.pastrieService.paginate((this.pageStart += this.nbrOfItem), (this.pageEnd += this.nbrOfItem));
-      }
-
-      if (this.pageEnd === this.pastrieService.getPastries().length) {
-        console.log('Next btn disabled');
-        elmt.disabled = true;
-      } else {
-        console.log('Next btn enabled');
-        if (elmt.id === "next") {
-          elmt.disabled = false;
-        }
-      }
-    }*/
-
-    console.log(`nbrOfItem ${this.nbrOfItem}`);
-    console.log(`Page Start: ${this.pageStart} && Page End: ${this.pageEnd}`);
+  pagination(page: number) {
+    this.pastries = this.pastrieService.paginate(this.pageStart = this.nbrOfItem * page, this.pageEnd = (this.nbrOfItem * page)+this.nbrOfItem);
+    this.currentPage = page;
+    console.log(`Start: ${this.pageStart}    End: ${this.pageEnd}`);
   }
 
 }

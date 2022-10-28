@@ -42,7 +42,6 @@ export class PastrieDetailsComponent implements OnInit {
       this.ingredients = this.ingredients = this.pastrieService.getPastrieIngredientsList(this.pastries.id);
     }
     this.ingredients?.list.sort()
-    console.log(this.ingredients);
   }
 
   modifyIngredientsOrder() {
@@ -51,22 +50,27 @@ export class PastrieDetailsComponent implements OnInit {
   }
 
   preference(id: string) {
-    this.changePreference.emit(id);
-    console.log(this.changePreference);
-    this.tag = Priority.Clicked
-    this.choice += 1;
-    if (this.choice >= 3) {
-      this.max_preferences = true;
+    /* Update the number of choice only if the pastry has not been choosen yet */
+    if (!this.pastries?.priority) {
+      this.choice += 1;
     }
+    this.changePreference.emit(id);
+    this.tag = Priority.Clicked
+
+    this.choice >= 3 ? this.max_preferences = true : this.max_preferences = false;
   }
 
-  hideDetails(pastry: Pastries | null) {
-    console.log('Before: ', pastry);  
+  hideDetails(pastry: Pastries | null) { 
+    /* Update the number of choice only if the pastry has been choosen once */
+    if (this.pastries?.priority) {
+      this.choice -= 1;
+    }
+
+    /* Empty pastry to hide the details view */
     pastry = null;
-    this.choice -= 1;
     this.currentPastries.emit(pastry);
-    console.log('After: ', pastry);
     
+    this.choice >= 3 ? this.max_preferences = true : this.max_preferences = false;
   }
 
 }
