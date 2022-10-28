@@ -55,6 +55,7 @@ export class PastriesComponent implements OnInit {
 
   getResult(pastries: Pastries[]) {
     this.pastries = pastries;
+    this.currentPage = 0;
   }
 
   switchPage(prev: HTMLButtonElement, next: HTMLButtonElement, e: MouseEvent) {
