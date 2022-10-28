@@ -1,0 +1,54 @@
+<app-search (result)="getResult($event)"></app-search>
+<h3>{{ titlePage }}</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 video">
+            <!-- PastrieDetails communication parent vers enfant -->
+            <app-pastrie-details [pastries]="selectedPastrie" (changePreference)="changeParentPreference($event)"
+                (currentPastries)="updatePastrie($event)"></app-pastrie-details>
+        </div>
+
+        <div class="col-sm-8">
+            <ul class="list-inline" *ngIf="pastries">
+                <li class="card mb-3" *ngFor="let pastry of pastries">
+                    <div class="card-header">
+                        <span class="badge text-bg-primary">{{pastry.ref}}</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{pastry.name}}</h5>
+                        <p>{{pastry.description}}</p>
+                        <div *ngIf="pastry.tags" class="list-inline mb-3">
+                            <div *ngFor="let tag of pastry.tags" class="list-inline-item">
+                                <span class="btn-primary badge bg-info">{{tag}}</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <a class="btn btn-outline-dark" href="#" role="button">fr</a>
+                            <ng-template [ngIf]="pastry.like">
+                                <img class="glyph-icon" src="./assets/svg/si-glyph-heart.svg" alt="like" />
+                                <small>{{ pastry.like }}</small>
+                            </ng-template>
+                            <ng-template [ngIf]="pastry.quantity">
+                                <img class="glyph-icon" src="./assets/svg/si-glyph-triangle-double-arrow-right.svg"
+                                    alt="disponibility" />
+                                <small>{{pastry.quantity}} unités disponibles</small>
+                            </ng-template>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" (click)="onSelect(pastry)">Details</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="...">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" #prev (click)="console(this)"><button class="page-link" id="previous" #previous (click)="switchPage(previous, next, $event)" disabled>Previous</button></li>
+        <li class="page-item" *ngFor="let i of pageList"><button class="page-link">{{i+1}}</button></li>
+        <li class="page-item"><button class="page-link"  id="next" #next (click)="switchPage(previous, next, $event)">Next</button></li>
+    </ul>
+    </nav>
+</div>

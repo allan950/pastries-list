@@ -1,0 +1,20 @@
+<!--{{pastries | json}}-->
+<div *ngIf="pastries">
+    <img class="img-fluid" src={{pastries.url}} />
+    <div>
+        <h5>{{pastries.ref}}</h5>
+        <p>Nom: {{pastries.name}}</p>
+        <button class="btn btn-primary" (click)="modifyIngredientsOrder()">{{state}} >></button>
+        <button class="btn btn-primary" (click)="hideDetails(pastries)">Hide Details</button>
+        <h4>Liste des ingrédients</h4>
+        <ul *ngIf="ingredients" class="list-group">
+            <li *ngFor="let ingredient of ingredients.list" class="list-group-item">
+                {{ingredient}}
+            </li>
+        </ul>
+        <button class="btn btn-primary" (click)="preference(pastries.id)" [disabled]="max_preferences">Choice</button>
+        <div class="badge bg-warning" *ngIf="pastries.priority" style="margin-left: 6px;">
+            {{tag}}
+        </div>
+    </div>
+</div>
