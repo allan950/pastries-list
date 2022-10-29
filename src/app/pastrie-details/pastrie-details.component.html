@@ -4,10 +4,12 @@
     <div>
         <h5>{{pastries.ref}}</h5>
         <p>Nom: {{pastries.name}}</p>
-        <button class="btn btn-primary" (click)="modifyIngredientsOrder()">{{state}} >></button>
-        <button class="btn btn-primary" (click)="hideDetails(pastries)">Hide Details</button>
+        <div>
+            <button type="button" class="btn btn-primary" (click)="modifyIngredientsOrder()">{{state}} >></button>
+            <button type="button" class="btn btn-primary" style="margin: 0.375rem;" (click)="hideDetails(pastries)">Hide Details</button>
+        </div>
         <h4>Liste des ingrédients</h4>
-        <ul *ngIf="ingredients" class="list-group">
+        <ul *ngIf="ingredients" class="list-group mb-3">
             <li *ngFor="let ingredient of ingredients.list" class="list-group-item">
                 {{ingredient}}
             </li>

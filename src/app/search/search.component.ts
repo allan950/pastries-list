@@ -10,7 +10,8 @@ import { Pastries } from '../pastries';
 })
 export class SearchComponent implements OnInit {
 
-  @Output() result: EventEmitter<Pastries[]> = new EventEmitter()
+  @Output() result: EventEmitter<Pastries[]> = new EventEmitter();
+  @Output() wordInput: EventEmitter<string> = new EventEmitter();
   word: string | undefined
 
   constructor(private pastrieService: PastrieService) { }
@@ -27,6 +28,7 @@ export class SearchComponent implements OnInit {
   onChangeEmit(word: string) {
     console.log(word);
     this.result.emit(this.pastrieService.search(word));
+    this.wordInput.emit(word);
   }
 
 }

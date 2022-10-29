@@ -1,5 +1,8 @@
-<app-search (result)="getResult($event)"></app-search>
+<app-search (result)="getResult($event)" (wordInput)="getWordInput($event)"></app-search>
 <h3>{{ titlePage }}</h3>
+<div class="lead text-center">
+    <p>Items : {{totalNbrofPastries}}</p>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-sm-4 video">
